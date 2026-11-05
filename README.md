@@ -27,8 +27,10 @@ A Python package that simplifies creating Windows and macOS installers for Pytho
 ## Installation
 
 ```bash
-pip install installer_builder
+pip install git+https://github.com/accessibleapps/installer_builder.git
 ```
+
+It isn't on PyPI, so install it from GitHub.
 
 ## Testing
 
