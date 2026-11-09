@@ -34,7 +34,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "mypy>=0.991,<1.15",
-    "types-setuptools==75.8.0.20250110",
+    "types-setuptools==84.2.0.20261104",
 ]
 
 [dependency-groups]
