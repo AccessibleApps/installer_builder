@@ -129,8 +129,10 @@ class InstallerBuilder(object):
         certificate_password: Optional[str] = None,
         extra_files_to_sign: Optional[List[Path]] = None,
         app_type: str = "windows",
+        icon: Optional[Path] = None,
     ) -> None:
         super(InstallerBuilder, self).__init__()
+        self.icon = icon
         self.main_module = main_module
         self.name = name
         self.version = version
@@ -588,6 +590,7 @@ class InstallerBuilder(object):
                 "innosetup": {
                     "extra_inno_script": self.extra_inno_script,
                     "register_startup": self.register_startup,
+                    "icon": self.icon,
                     "certificate_file": self.certificate_file,
                     "certificate_password": self.certificate_password,
                     "extra_sign": self.extra_files_to_sign,
@@ -649,6 +652,8 @@ class InstallerBuilder(object):
             setup_arguments[self.app_type][0]["other_resources"] = (
                 innosetup.manifest(self.name),
             )
+            if self.icon:
+                setup_arguments[self.app_type][0]["icon_resources"] = [(1, str(self.icon))]
             requested_commands = set(sys.argv[1:])
             if {"py2exe", "innosetup", self.build_command} & requested_commands:
                 import py2exe

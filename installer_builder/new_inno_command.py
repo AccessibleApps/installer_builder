@@ -43,6 +43,9 @@ def create_installer_config(builder_instance: InstallerCommand, dist_dir: Path) 
     installer.main_executable = main_exe
     installer.app_short_description = builder_instance.distribution.metadata.description or ""
     installer.run_at_startup = builder_instance.register_startup
+    icon = getattr(builder_instance, "icon", None)
+    if icon:
+        installer.setup_icon_file = str(pathlib.Path(icon).resolve())
     
     # Set output filename
     app_name, app_version = installer.app_name, installer.app_version
@@ -72,6 +75,7 @@ class NewInnoSetupCommand(distutils.core.Command):
         ("certificate-password=", None, "password for signing certificate"),
         ("extra-sign=", None, "extra files to be signed"),
         ("register-startup=", None, "register application to run at startup"),
+        ("icon=", None, "application icon (.ico) for the installer and uninstall entry"),
         ("dist-dir=", "d", "directory to put final built distributions in"),
     ]
     
@@ -81,6 +85,7 @@ class NewInnoSetupCommand(distutils.core.Command):
         self.certificate_password: Optional[str] = None
         self.extra_sign: List[Path] = []
         self.register_startup = False
+        self.icon: Optional[Path] = None
         self.dist_dir: Optional[Path] = None
         
     def finalize_options(self) -> None:
